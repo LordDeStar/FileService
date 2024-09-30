@@ -1,18 +1,13 @@
 const express = require('express')
-const config = require('config')
-const mongo = require('mongoose')
-const PORT = config.get('serverPort')
+const cors = require('cors')
+const projectRoutes = require('./routes/projectRoutes')
 const app = express()
 
-const start = async () => {
-	try {
-		await mongo.connect(config.get('dbUrl'))
-		app.listen(PORT, () => {
-			console.log(`Server starts on http://localhost:${PORT}`)
-		})
-	} catch (e) {
-		console.log(e)
-	}
-}
+app.use(express.json())
+app.use(cors())
+app.use(projectRoutes)
 
-start()
+app.listen(8080, (err) => {
+	if (err) console.error(err)
+	else console.log('Server started on http://localhost:8080')
+})
